@@ -1,0 +1,13 @@
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ${{ var.RUNS_ON }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          make update
+          make push
