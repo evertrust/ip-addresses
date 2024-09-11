@@ -4,14 +4,18 @@ on:
   workflow_dispatch:
 
 permissions:
-    contents: write
+  contents: write
+
+name: Update IPs
 
 jobs:
   update:
     runs-on: ${{ vars.RUNS_ON }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
+      - name: Setup Git 
+        run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          make
+      - name: Update IPs
+        run: make
