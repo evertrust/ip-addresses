@@ -8,3 +8,8 @@ raw_response=$(curl -H "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14_7_
 
 # Parse the JSON response and extract only IPs used for Azure AD SCIM provisioning
 echo "$raw_response" | jq -r '.values[] | select(.id == "AzureActiveDirectory") | .properties.addressPrefixes[]' > azuread_ips.txt
+
+if [ ! -s azuread_ips.txt ]; then
+  echo "0 IP address fetched from Microsoft. There might be a parsing problem."
+  exit 1;
+fi
