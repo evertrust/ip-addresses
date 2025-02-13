@@ -13,7 +13,8 @@ jobs:
     runs-on: ${{ vars.RUNS_ON }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Git 
+      - uses: remarkablemark/setup-htmlq@v2
+      - name: Setup Git
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
