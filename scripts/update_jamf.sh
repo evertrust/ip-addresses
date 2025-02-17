@@ -9,6 +9,6 @@ raw_response=$(curl -s -H "user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 14
 echo "$raw_response" | jq -r '.topic_html' | htmlq 'table li' --text | grep -E '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sed 's/$/\/32/' > jamf_ips.txt
 
 if [ ! -s jamf_ips.txt ]; then
-  echo "0 IP address fetched from Microsoft. There might be a parsing problem."
+  echo "0 IP address fetched from Jamf. There might be a parsing problem."
   exit 1;
 fi
