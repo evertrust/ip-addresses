@@ -13,3 +13,7 @@ For conveniance purposes, this repository also keeps an index of some third-part
 Currently, the following lists are maintained:
 
 - [azuread_ips.txt](./azuread_ips.txt): the list of IPs used for SCIM provisioning for Entra (formerly Azure AD)
+
+- [betteruptime_ips.txt](./betteruptime_ips.txt): the list of IPs used for Better Uptime
+
+- [jamf_ips.txt](./jamf_ips.txt): the list of IPs used for Jamf.
