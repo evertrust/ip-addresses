@@ -1,0 +1,33 @@
+[tasks.all]
+description = "Update IP lists, regenerate ModSecurity rules, and push changes"
+depends = ["update"]
+run = "mise run push"
+
+[tasks.update-azuread]
+description = "Fetch Azure Active Directory IPs and store them in azuread_ips.txt"
+run = "./scripts/update_azuread.sh"
+
+[tasks.update-jamf]
+description = "Fetch Jamf IPs and store them in jamf_ips.txt"
+run = "./scripts/update_jamf.sh"
+
+[tasks.update-betteruptime]
+description = "Fetch Better Uptime IPs and store them in betteruptime_ips.txt"
+run = "./scripts/update_betteruptime.sh"
+
+[tasks.update]
+description = "Fetch all third-party IPs and regenerate generated manifests"
+depends = ["update-azuread", "update-jamf", "update-betteruptime"]
+run = "mise run generate-modsecurity-configmap"
+
+[tasks.generate-modsecurity-configmap]
+description = "Generate a Kubernetes ConfigMap containing ModSecurity rules for all IP lists"
+run = "./scripts/generate_modsecurity_configmap.sh"
+
+[tasks.push]
+description = "Commit and push generated changes"
+run = [
+  "git add .",
+  "git diff --quiet && git diff --staged --quiet || git commit -am \"Beep. Bop. Automated update.\"",
+  "git push",
+]
