@@ -28,6 +28,17 @@ mise run generate-modsecurity-configmap
 
 This writes `modsecurity-rules-configmap.yaml`. The ConfigMap keys keep the service names, for example `azuread.conf`, `betteruptime.conf`, and `jamf.conf`. The root `ips.txt` list is written as `evertrust.conf`.
 
+Each generated file sets `tx.allowed_source_ip=1` when `REMOTE_ADDR` matches its IP list. Add the final deny rule in the ingress annotation after the selected includes:
+
+```yaml
+nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+nginx.ingress.kubernetes.io/modsecurity-snippet: |
+  SecAction "id:9998,phase:1,pass,nolog,setvar:tx.allowed_source_ip=0"
+  Include /etc/nginx/modsecurity/ips/jamf.conf
+  Include /etc/nginx/modsecurity/ips/betteruptime.conf
+  SecRule TX:allowed_source_ip "@eq 0" "id:9999,phase:1,log,drop,status:444,severity:INFO"
+```
+
 Set `CONFIGMAP_NAME` or pass an output path to the script to customize the generated manifest:
 
 ```sh
