@@ -17,3 +17,19 @@ Currently, the following lists are maintained:
 - [betteruptime_ips.txt](./betteruptime_ips.txt): the list of IPs used for Better Uptime
 
 - [jamf_ips.txt](./jamf_ips.txt): the list of IPs used for Jamf.
+
+## ModSecurity ConfigMap
+
+Generate a Kubernetes ConfigMap with one ModSecurity rule file per IP list:
+
+```sh
+mise run generate-modsecurity-configmap
+```
+
+This writes `modsecurity-rules-configmap.yaml`. The ConfigMap keys keep the service names, for example `azuread.conf`, `betteruptime.conf`, and `jamf.conf`. The root `ips.txt` list is written as `evertrust.conf`.
+
+Set `CONFIGMAP_NAME` or pass an output path to the script to customize the generated manifest:
+
+```sh
+CONFIGMAP_NAME=my-modsecurity-rules ./scripts/generate_modsecurity_configmap.sh ./configmap.yaml
+```
