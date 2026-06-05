@@ -3,7 +3,7 @@ set -euo pipefail
 
 output_file="${1:-modsecurity-rules-configmap.yaml}"
 configmap_name="${CONFIGMAP_NAME:-evertrust-modsecurity-ip-rules}"
-rule_id="${RULE_ID:-10000}"
+next_rule_id="${RULE_ID:-10000}"
 
 join_cidrs() {
   awk '
@@ -23,6 +23,7 @@ append_rule() {
   local source_file="$1"
   local configmap_key="$2"
   local cidrs
+  local rule_id
 
   if [ ! -s "$source_file" ]; then
     echo "$source_file is empty or missing" >&2
@@ -34,6 +35,9 @@ append_rule() {
     echo "$source_file does not contain any CIDR" >&2
     exit 1
   fi
+
+  rule_id="$next_rule_id"
+  next_rule_id=$((next_rule_id + 1))
 
   {
     printf '  %s: |\n' "$configmap_key"
