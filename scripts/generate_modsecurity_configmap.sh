@@ -41,7 +41,7 @@ append_rule() {
 
   {
     printf '  %s: |\n' "$configmap_key"
-    printf '    SecRule REMOTE_ADDR "!@ipMatch %s" "id:%s,phase:1,log,drop,status:444,severity:INFO"\n' "$cidrs" "$rule_id"
+    printf '    SecRule REMOTE_ADDR "@ipMatch %s" "id:%s,phase:1,pass,nolog,setvar:tx.allowed_source_ip=1"\n' "$cidrs" "$rule_id"
   } >> "$output_file"
 }
 

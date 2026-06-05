@@ -28,6 +28,8 @@ mise run generate-modsecurity-configmap
 
 This writes `modsecurity-rules-configmap.yaml`. The ConfigMap keys keep the service names, for example `azuread.conf`, `betteruptime.conf`, and `jamf.conf`. The root `ips.txt` list is written as `evertrust.conf`.
 
+Each generated file sets `tx.allowed_source_ip=1` when `REMOTE_ADDR` matches its IP list.
+
 Set `CONFIGMAP_NAME` or pass an output path to the script to customize the generated manifest:
 
 ```sh
